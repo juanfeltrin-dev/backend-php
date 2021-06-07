@@ -6,6 +6,8 @@ namespace Moovin\Job\Backend;
 
 interface AccountInterface
 {
+    public function balance();
+    
     public function deposit(float $amount);
 
     public function withdraw(float $amount);

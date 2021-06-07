@@ -8,9 +8,9 @@ use Exception;
 
 class SavingAccount extends AbstractAccount implements AccountInterface
 {
-    private const FEE_PER_WITHDRAW = 0.80;
+    private const FEE_PER_WITHDRAW = 0.8;
 
-    private const WITHDRAW_LIMIT = 1000.00;
+    private const WITHDRAW_LIMIT = 1000.0;
 
     /**
      * SavingAccount constructor.
@@ -19,6 +19,14 @@ class SavingAccount extends AbstractAccount implements AccountInterface
     public function __construct(float $balance)
     {
         $this->balance = $balance;
+    }
+
+    /**
+     * @return float
+     */
+    public function balance(): float
+    {
+        return $this->balance;
     }
 
     /**
