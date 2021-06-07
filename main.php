@@ -2,8 +2,14 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Moovin\Job\Backend;
+$checkingAccount = new \Moovin\Job\Backend\CheckingAccount(1500);
+$savingAccount = new \Moovin\Job\Backend\SavingAccount(2500);
 
-$exemplo = new Backend\Exemplo;
+try {
+    $checkingAccount->transfer(150, $savingAccount);
 
-echo $exemplo->exemplo();
+    print_r($checkingAccount);
+    print_r($savingAccount);
+} catch (Exception $exception) {
+    echo $exception->getMessage() . PHP_EOL;
+}
