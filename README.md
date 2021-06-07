@@ -1,5 +1,10 @@
 # Backend PHP <img src="https://www.moovin.com.br/assets/images/svg/logo2.svg" width="50">
 
+### Docker
+```zsh
+  foo@bar:~$ docker-compose up
+```
+
 ### Desafio
 
 Desenvolver uma solução para o desafio proposto com a utilização de orientação a objetos na linguagem PHP.
