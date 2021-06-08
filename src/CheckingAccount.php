@@ -43,9 +43,11 @@ class CheckingAccount extends AbstractAccount implements AccountInterface
      */
     public function withdraw(float $amount)
     {
-        $this->validateAmount($amount, self::WITHDRAW_LIMIT);
+        $amountWithFee = $amount + self::FEE_PER_WITHDRAW;
 
-        $this->balance -= $amount + self::FEE_PER_WITHDRAW;
+        $this->validateAmount($amountWithFee, self::WITHDRAW_LIMIT);
+
+        $this->balance -= $amountWithFee;
     }
 
     /**

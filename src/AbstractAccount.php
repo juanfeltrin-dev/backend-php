@@ -15,23 +15,23 @@ abstract class AbstractAccount
 
     /**
      * @param float $amount
-     * @param float $withDrawLimit
+     * @param float $withdrawLimit
      * @throws Exception
      */
-    protected function validateAmount($amount, float $withDrawLimit)
+    protected function validateAmount($amount, float $withdrawLimit)
     {
-        $this->validateWithDrawLimit($amount, $withDrawLimit);
+        $this->validateWithdrawLimit($amount, $withdrawLimit);
         $this->validateBalance($amount);
     }
 
     /**
      * @param float $amount
-     * @param float $withDrawLimit
+     * @param float $withdrawLimit
      * @throws Exception
      */
-    protected function validateWithDrawLimit(float $amount, float $withDrawLimit)
+    protected function validateWithdrawLimit(float $amount, float $withdrawLimit)
     {
-        if ($amount > $withDrawLimit) {
+        if ($amount > $withdrawLimit) {
             throw new Exception(
                 "O valor excedeu o limite de saque."
             );
@@ -48,5 +48,4 @@ abstract class AbstractAccount
             throw new Exception("Saldo insuficiente.");
         }
     }
-
 }

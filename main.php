@@ -2,11 +2,13 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$checkingAccount = new \Moovin\Job\Backend\CheckingAccount(1500);
-$savingAccount = new \Moovin\Job\Backend\SavingAccount(2500);
-
 try {
-    $checkingAccount->transfer(150, $savingAccount);
+    $cashMachine = new \Moovin\Job\Backend\CashMachine();
+
+    $checkingAccount = new \Moovin\Job\Backend\CheckingAccount(1500);
+    $savingAccount = new \Moovin\Job\Backend\SavingAccount(2500);
+
+    $cashMachine->withdraw($checkingAccount, -150);
 
     print_r($checkingAccount);
     print_r($savingAccount);

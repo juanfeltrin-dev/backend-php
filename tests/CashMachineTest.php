@@ -4,15 +4,26 @@
 namespace Moovin\Job\Backend\Tests;
 
 
+use Moovin\Job\Backend\CashMachine;
 use Moovin\Job\Backend\CheckingAccount;
 use Moovin\Job\Backend\SavingAccount;
 
 class CashMachineTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var CashMachine
+     */
+    protected $cashMachine;
+
+    protected function setUp()
+    {
+        $this->cashMachine = new CashMachine();
+    }
+
     public function testDepositCheckingAccount()
     {
         $checkingAccount = new CheckingAccount(500);
-        $checkingAccount->deposit(200);
+        $this->cashMachine->deposit($checkingAccount, 200);
 
         $this->assertEquals((float) 700, $checkingAccount->balance());
     }
@@ -20,7 +31,7 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
     public function testDepositSavingAccount()
     {
         $savingAccount = new SavingAccount(800);
-        $savingAccount->deposit(200);
+        $this->cashMachine->deposit($savingAccount, 200);
 
         $this->assertEquals(1000, $savingAccount->balance());
     }
@@ -31,7 +42,7 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(\Exception::class);
 
-        $checkingAccount->withdraw(600);
+        $this->cashMachine->withdraw($checkingAccount, 600);
     }
 
     public function testWithDrawSavingAccountGreaterThanBalance()
@@ -40,7 +51,7 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(\Exception::class);
 
-        $savingAccount->withdraw(900);
+        $this->cashMachine->withdraw($savingAccount, 900);
     }
 
     public function testWithDrawCheckingAccountGreaterThanLimit()
@@ -49,7 +60,7 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(\Exception::class);
 
-        $checkingAccount->withdraw(601);
+        $this->cashMachine->withdraw($checkingAccount, 601);
     }
 
     public function testWithDrawSavingAccountGreaterThanLimit()
@@ -58,14 +69,14 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(\Exception::class);
 
-        $savingAccount->withdraw(1001);
+        $this->cashMachine->withdraw($savingAccount, 1001);
     }
 
     public function testWithDrawCheckingAccount()
     {
         $checkingAccount = new CheckingAccount(15000);
 
-        $checkingAccount->withdraw(300);
+        $this->cashMachine->withdraw($checkingAccount, 300);
 
         $this->assertEquals(
             15000 - 302.5,
@@ -77,7 +88,7 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
     {
         $savingAccount = new SavingAccount(15000);
 
-        $savingAccount->withdraw(300);
+        $this->cashMachine->withdraw($savingAccount, 300);
 
         $this->assertEquals(
             15000 - 300.8,
@@ -91,9 +102,10 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(\Exception::class);
 
-        $checkingAccount->transfer(
-            600,
-            new CheckingAccount(1000)
+        $this->cashMachine->transfer(
+            $checkingAccount,
+            new CheckingAccount(1000),
+            600
         );
     }
 
@@ -103,9 +115,10 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->expectException(\Exception::class);
 
-        $savingAccount->transfer(
-            900,
-            new SavingAccount(1000)
+        $this->cashMachine->transfer(
+            $savingAccount,
+            new SavingAccount(1000),
+            900
         );
     }
 
@@ -114,9 +127,10 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
         $checkingAccount = new CheckingAccount(500);
         $recipientAccount = new CheckingAccount(1000);
 
-        $checkingAccount->transfer(
-            300,
-            $recipientAccount
+        $this->cashMachine->transfer(
+            $checkingAccount,
+            $recipientAccount,
+            300
         );
 
         $this->assertEquals(200, $checkingAccount->balance());
@@ -128,9 +142,10 @@ class CashMachineTest extends \PHPUnit_Framework_TestCase
         $savingAccount = new SavingAccount(800);
         $recipientAccount = new SavingAccount(1000);
 
-        $savingAccount->transfer(
-            500,
-            $recipientAccount
+        $this->cashMachine->transfer(
+            $savingAccount,
+            $recipientAccount,
+            500
         );
 
         $this->assertEquals(300, $savingAccount->balance());
